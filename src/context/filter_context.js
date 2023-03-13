@@ -26,7 +26,7 @@ const initialState = {
     min_price:0,
     max_price:0,
     price:0,
-    shopping: false
+    shipping: false
   }
 }
 
@@ -42,8 +42,12 @@ export const FilterProvider = ({ children }) => {
 
   useEffect(() => {
     dispatch({type: SORT_PRODUCTS})
+    //dispatch({type: FILTER_PRODUCTS})
+  }, [products, state.sort])
+
+  useEffect(() => {
     dispatch({type: FILTER_PRODUCTS})
-  }, [products,state.sort, state.filters])
+  }, [products, state.filters])
 
   const setGridView = () => {
     dispatch({type: SET_GRIDVIEW})
@@ -70,10 +74,13 @@ const updateFilters = (e) => {
   if(name === 'price'){
     value = Number(value)
   }
+  if(name === 'shipping'){
+    value = e.target.checked
+  }
   dispatch({type:UPDATE_FILTERS, payload:{name,value}})
 } 
 const clearFilters = () => {
-
+  dispatch({type: CLEAR_FILTERS})
 } 
   return (
     <FilterContext.Provider value={{...state, setGridView, setListView, updateSort,
